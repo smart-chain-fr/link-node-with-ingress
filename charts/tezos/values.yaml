@@ -257,6 +257,16 @@ nodes:
           shell:
             history_mode: rolling
           metrics_addr: ["0.0.0.0:9932"]
+  archive-node:
+    storage_size: 1000Gi
+    runs:
+      - octez_node
+    instances:
+      - is_bootstrap_node: false
+        config:
+          shell:
+            history_mode: archive
+          metrics_addr: ["0.0.0.0:9932"]
 # End nodes
 
 ## Configuration for K8s Service resources. Configuring the labels selector of a

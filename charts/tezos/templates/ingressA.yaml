@@ -1,0 +1,39 @@
+{{- if .Values.ingressA.enabled }}
+{{- $_ := required "host is required for tezos-node-rpc ingress" .Values.ingressA.host }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingressA.serviceName }}-ingress #tezos-node-rpc
+  namespace: {{ .Release.Namespace }}
+{{- with .Values.ingressA.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- with .Values.ingressA.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+spec:
+  ingressAClassName: {{ .Values.ingressA.className }}
+  {{- if .Values.ingressA.tls }}
+  tls:
+    {{- range .Values.ingressA.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.ingressA.host }}
+      http:
+        paths:
+          - pathType: {{ .Values.ingressA.pathType }}
+            path: /
+            backend:
+              service:
+                name: {{ .Values.ingressA.serviceName }} #tezos-node-rpc
+                port:
+                  number: 8732
+{{- end }}

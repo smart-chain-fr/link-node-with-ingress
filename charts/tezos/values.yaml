@@ -280,15 +280,54 @@ services:
 #      rpc_node: "true"
 
 ## Configuration for the tezos-node-rpc ingress
-ingress:
-  enabled: false
-  host: ""
-  annotations: {}
+ingressA:
+  enabled: true
+  host: "ghostnet-archive.tezoslink.net"
+  serviceName: archive-node
+  http:
+    paths:
+    - backend:
+        service:
+          name: archive-node
+          port:
+            number: 8732
+  annotations: {
+    kubernetes.io/ingress.class: gce,
+    networking.gke.io/managed-certificates: linkrpc
+  }
   className: ""
   labels: {}
   pathType: Prefix
   tls: []
 
+ingressR:
+  enabled: true
+  host: "ghostnet-rolling.tezoslink.net"
+  serviceName: rolling-node
+  http:
+    paths:
+    - backend:
+        service:
+          name: rolling-node
+          port:
+            number: 8732
+  annotations: {
+    kubernetes.io/ingress.class: gce,
+    networking.gke.io/managed-certificates: linkrpc,
+    gce.ingress.kubernetes.io/from-to-www-redirect: "true",
+    gce.ingress.kubernetes.io/force-ssl-redirect: "true",
+    gce.ingress.kubernetes.io/client_max_body_size: 200m,
+    gce.ingress.kubernetes.io/client-body-buffer-size: 2M,
+    gce.ingress.kubernetes.io/proxy-body-size: 200m,
+    gce.ingress.kubernetes.io/enable-cors: "true",
+    gce.ingress.kubernetes.io/cors-allow-origin: "*"
+  }
+  className: ""
+  labels: {}
+  pathType: Prefix
+  tls: []
+
+  
 # Prometheus Operator is required in your cluster in order to enable
 # serviceMonitor below.
 # ServiceMonitor allows you to scrape the prometheus endpoints of your tezos nodes.
@@ -591,6 +630,7 @@ bcdIndexer:
     labels: {}
     pathType: Prefix
     tls: []
+
 
   db:
     # By default creates a postgres db container. Setting to true won't create

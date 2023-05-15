@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: linkrpc
+spec:
+  domains:
+    - ghostnet-archive.tezoslink.net
+    - ghostnet-rolling.tezoslink.net

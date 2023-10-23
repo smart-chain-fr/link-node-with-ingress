@@ -267,6 +267,13 @@ nodes:
           shell:
             history_mode: rolling
           metrics_addr: ["0.0.0.0:9932"]
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: "500m"
+      limits:
+        memory: "1000Mi"
+        cpu: "1000m"
   archive-node:
     storage_size: 1300Gi
     runs:
@@ -277,6 +284,14 @@ nodes:
           shell:
             history_mode: archive
           metrics_addr: ["0.0.0.0:9932"]
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: "500m"
+      limits:
+        memory: "1000Mi"
+        cpu: "1000m"
+  
 # End nodes
 
 ## Configuration for K8s Service resources. Configuring the labels selector of a
@@ -289,7 +304,6 @@ services:
     selector:
 #      rpc_node: "true"
 
-## Configuration for the tezos-node-rpc ingress
 ingressA:
   enabled: true
   host: "mainnet-archive.tezoslink.net"
@@ -303,40 +317,48 @@ ingressA:
             number: 8732
   annotations: {
     kubernetes.io/ingress.class: gce,
-    networking.gke.io/managed-certificates: linkrpc
+      networking.gke.io/managed-certificates: linkrpc,
+      gce.ingress.kubernetes.io/from-to-www-redirect: "true",
+      gce.ingress.kubernetes.io/force-ssl-redirect: "true",
+      gce.ingress.kubernetes.io/client_max_body_size: 200m,
+      gce.ingress.kubernetes.io/client-body-buffer-size: 2M,
+      gce.ingress.kubernetes.io/proxy-body-size: 200m,
+      gce.ingress.kubernetes.io/enable-cors: "true",
+      gce.ingress.kubernetes.io/cors-allow-origin: "*",
   }
   className: ""
   labels: {}
   pathType: Prefix
   tls: []
 
+## Configuration for the tezos-node-rpc ingress
 ingressR:
   enabled: true
   host: "mainnet-rolling.tezoslink.net"
   serviceName: rolling-node
   http:
     paths:
-    - backend:
-        service:
-          name: rolling-node
-          port:
-            number: 8732
-  annotations: {
-    kubernetes.io/ingress.class: gce,
-    networking.gke.io/managed-certificates: linkrpc,
-    gce.ingress.kubernetes.io/from-to-www-redirect: "true",
-    gce.ingress.kubernetes.io/force-ssl-redirect: "true",
-    gce.ingress.kubernetes.io/client_max_body_size: 200m,
-    gce.ingress.kubernetes.io/client-body-buffer-size: 2M,
-    gce.ingress.kubernetes.io/proxy-body-size: 200m,
-    gce.ingress.kubernetes.io/enable-cors: "true",
-    gce.ingress.kubernetes.io/cors-allow-origin: "*"
-  }
+      - backend:
+          service:
+            name: rolling-node
+            port:
+              number: 8732
+  annotations:
+    {
+      kubernetes.io/ingress.class: gce,
+      networking.gke.io/managed-certificates: linkrpc,
+      gce.ingress.kubernetes.io/from-to-www-redirect: "true",
+      gce.ingress.kubernetes.io/force-ssl-redirect: "true",
+      gce.ingress.kubernetes.io/client_max_body_size: 200m,
+      gce.ingress.kubernetes.io/client-body-buffer-size: 2M,
+      gce.ingress.kubernetes.io/proxy-body-size: 200m,
+      gce.ingress.kubernetes.io/enable-cors: "true",
+      gce.ingress.kubernetes.io/cors-allow-origin: "*",
+    }
   className: ""
   labels: {}
   pathType: Prefix
   tls: []
-
 
 # Prometheus Operator is required in your cluster in order to enable
 # serviceMonitor below.
@@ -345,7 +367,7 @@ ingressR:
 #     metrics_addr: [ ":9932" ]
 # to your config.
 serviceMonitor:
-  enabled: false
+  enabled: true
   labels:
     # release: my-monitoring-release
 
@@ -396,7 +418,7 @@ snapshot_source: https://xtz-shots.io/tezos-snapshots.json
 # You must trust the tarball provider to provide good data, as no check is
 # performed by the node.
 # If you prefer tarballs, set to "true" below.
-prefer_tarballs: false
+prefer_tarballs: true
 
 # By default, tezos-k8s will attempt to download the right artifact from
 # `snapshot_source` set above. You can override and hard-code a snapshot URL
@@ -404,11 +426,11 @@ prefer_tarballs: false
 # will be ignored for all artifact types.
 ## NOTE: `*_tarball_url` and `*_snapshot_url` are mutually exclusive
 ## and cannot both be specified at the same time.
-archive_tarball_url: https://mainnet.xtz-shots.io/archive-tarball
+archive_tarball_url: null # e.g. https://mainnet.xtz-shots.io/archive-tarball
 full_snapshot_url: null
 full_tarball_url: null
 rolling_snapshot_url: null
-rolling_tarball_url: https://mainnet.xtz-shots.io/rolling-tarball
+rolling_tarball_url: https://mainnet-v17-shots.nyc3.digitaloceanspaces.com/tezos-mainnet-rolling-tarball-4449805.lz4
 
 # List of peers for nodes to connect to. Gets set under config.json `p2p` field
 bootstrap_peers: []

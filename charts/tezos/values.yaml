@@ -258,7 +258,7 @@ node_globals:
   env: {}
 nodes:
   rolling-node:
-    storage_size: 100Gi
+    storage_size: 10Gi
     runs:
       - octez_node
     instances:
@@ -269,13 +269,13 @@ nodes:
           metrics_addr: ["0.0.0.0:9932"]
     resources:
       requests:
-        memory: "8000Mi"
-        cpu: "2000m"
+        memory: "4000Mi"
+        cpu: "1500m"
       limits:
-        memory: "8000Mi"
-        cpu: "2000m"
+        memory: "4000Mi"
+        cpu: "1500m"
   archive-node:
-    storage_size: 1300Gi
+    storage_size: 100Gi
     runs:
       - octez_node
     instances:
@@ -286,11 +286,11 @@ nodes:
           metrics_addr: ["0.0.0.0:9932"]
     resources:
       requests:
-        memory: "8000Mi"
-        cpu: "2000m"
+        memory: "4000Mi"
+        cpu: "1500m"
       limits:
-        memory: "8000Mi"
-        cpu: "2000m"
+        memory: "4000Mi"
+        cpu: "1500m"
   
 # End nodes
 
@@ -430,7 +430,7 @@ archive_tarball_url: null
 full_snapshot_url: null
 full_tarball_url: null
 rolling_snapshot_url: null
-rolling_tarball_url: https://mainnet-v17-shots.nyc3.digitaloceanspaces.com/tezos-mainnet-rolling-tarball-4449805.lz4
+rolling_tarball_url: https://ghostnet-v17-shots.nyc3.digitaloceanspaces.com/tezos-ghostnet-rolling-tarball-4282143.lz4
 
 # List of peers for nodes to connect to. Gets set under config.json `p2p` field
 bootstrap_peers: []

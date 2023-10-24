@@ -471,7 +471,7 @@ protocols:
   ##   "on" and "off" must be between quotes.
   ## Note that we are not providing default votes since every baker needs
   ## to make an explicit educated choice on every toggle.
-  - command: PtMumbai
+  - command: PtNairob
     vote: {}
   # - command: alpha
   #   vote:

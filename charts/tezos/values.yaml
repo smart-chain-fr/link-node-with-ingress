@@ -257,6 +257,13 @@ nodes:
           shell:
             history_mode: rolling
           metrics_addr: ["0.0.0.0:9932"]
+    resources:
+      requests:
+        memory: "8000Mi"
+        cpu: "2000m"
+      limits:
+        memory: "8000Mi"
+        cpu: "2000m"
   archive-node:
     storage_size: 1000Gi
     runs:
@@ -267,6 +274,13 @@ nodes:
           shell:
             history_mode: archive
           metrics_addr: ["0.0.0.0:9932"]
+    resources:
+      requests:
+        memory: "8000Mi"
+        cpu: "2000m"
+      limits:
+        memory: "8000Mi"
+        cpu: "2000m"
 # End nodes
 
 ## Configuration for K8s Service resources. Configuring the labels selector of a
@@ -292,8 +306,15 @@ ingressA:
           port:
             number: 8732
   annotations: {
-    kubernetes.io/ingress.class: gce,
-    networking.gke.io/managed-certificates: linkrpc
+   kubernetes.io/ingress.class: gce,
+    networking.gke.io/managed-certificates: linkrpc,
+    gce.ingress.kubernetes.io/from-to-www-redirect: "true",
+    gce.ingress.kubernetes.io/force-ssl-redirect: "true",
+    gce.ingress.kubernetes.io/client_max_body_size: 200m,
+    gce.ingress.kubernetes.io/client-body-buffer-size: 2M,
+    gce.ingress.kubernetes.io/proxy-body-size: 200m,
+    gce.ingress.kubernetes.io/enable-cors: "true",
+    gce.ingress.kubernetes.io/cors-allow-origin: "*"
   }
   className: ""
   labels: {}

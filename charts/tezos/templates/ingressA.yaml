@@ -30,7 +30,7 @@ spec:
       http:
         paths:
           - pathType: {{ .Values.ingressA.pathType }}
-            path: "/health-check"
+            path: /
             backend:
               service:
                 name: {{ .Values.ingressA.serviceName }} #tezos-node-rpc

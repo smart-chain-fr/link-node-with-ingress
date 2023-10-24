@@ -269,10 +269,10 @@ nodes:
           metrics_addr: ["0.0.0.0:9932"]
     resources:
       requests:
-        memory: "1000Mi"
-        cpu: "1000m"
+        memory: "8000Mi"
+        cpu: "2000m"
       limits:
-        memory: "2000Mi"
+        memory: "8000Mi"
         cpu: "2000m"
   archive-node:
     storage_size: 1300Gi
@@ -286,10 +286,10 @@ nodes:
           metrics_addr: ["0.0.0.0:9932"]
     resources:
       requests:
-        memory: "1000Mi"
-        cpu: "1000m"
+        memory: "8000Mi"
+        cpu: "2000m"
       limits:
-        memory: "2000Mi"
+        memory: "8000Mi"
         cpu: "2000m"
   
 # End nodes

@@ -269,11 +269,11 @@ nodes:
           metrics_addr: ["0.0.0.0:9932"]
     resources:
       requests:
-        memory: "4000Mi"
-        cpu: "1500m"
+        memory: "10000Mi"
+        cpu: "2500m"
       limits:
         memory: "4000Mi"
-        cpu: "1500m"
+        cpu: "2500m"
   archive-node:
     storage_size: 1300Gi
     runs:
@@ -286,11 +286,11 @@ nodes:
           metrics_addr: ["0.0.0.0:9932"]
     resources:
       requests:
-        memory: "4000Mi"
-        cpu: "1500m"
+        memory: "10000Mi"
+        cpu: "2500m"
       limits:
-        memory: "4000Mi"
-        cpu: "1500m"
+        memory: "10000Mi"
+        cpu: "2500m"
 # End nodes
 
 ## Configuration for K8s Service resources. Configuring the labels selector of a

@@ -8,7 +8,7 @@ is_invitation: false
 
 # Images not part of the tezos-k8s repo go here
 images:
-  octez: tezos/tezos:v17.1
+  octez: tezos/tezos:v18.0
   tacoinfraRemoteSigner: ghcr.io/oxheadalpha/tacoinfra-remote-signer:0.1.0
 # Images that are part of the tezos-k8s repo go here with 'dev' tag
 tezos_k8s_images:
@@ -258,7 +258,7 @@ node_globals:
   env: {}
 nodes:
   rolling-node:
-    storage_size: 100Gi
+    storage_size: 130Gi
     runs:
       - octez_node
     instances:
@@ -272,10 +272,10 @@ nodes:
         memory: "10000Mi"
         cpu: "2500m"
       limits:
-        memory: "4000Mi"
+        memory: "10000Mi"
         cpu: "2500m"
   archive-node:
-    storage_size: 1300Gi
+    storage_size: 3000Gi
     runs:
       - octez_node
     instances:
@@ -425,11 +425,11 @@ prefer_tarballs: true
 # will be ignored for all artifact types.
 ## NOTE: `*_tarball_url` and `*_snapshot_url` are mutually exclusive
 ## and cannot both be specified at the same time.
-archive_tarball_url: null # e.g. https://mainnet.xtz-shots.io/archive-tarball
+archive_tarball_url: https://arc.tzinit.org/archive-20231108.tar.lz4
 full_snapshot_url: null
 full_tarball_url: null
 rolling_snapshot_url: null
-rolling_tarball_url: https://mainnet-v17-shots.nyc3.digitaloceanspaces.com/tezos-mainnet-rolling-tarball-4449805.lz4
+rolling_tarball_url: https://mainnet-v17-shots.nyc3.digitaloceanspaces.com/tezos-mainnet-rolling-tarball-4578590.lz4
 
 # List of peers for nodes to connect to. Gets set under config.json `p2p` field
 bootstrap_peers: []
